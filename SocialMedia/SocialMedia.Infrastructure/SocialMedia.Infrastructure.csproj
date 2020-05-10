@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Filters\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

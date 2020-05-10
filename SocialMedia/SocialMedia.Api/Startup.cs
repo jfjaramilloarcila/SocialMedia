@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SocialMedia.Core.Interfaces;
+using SocialMedia.Infrastructure.Data;
 using SocialMedia.Infrastructure.Repositories;
 
 namespace SocialMedia.Api
@@ -28,6 +31,10 @@ namespace SocialMedia.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //Crear contexto de conexion a bd utilizando sqlserver con la cadena de conexion que esta appsetting
+            services.AddDbContext<SocialMediaContext>(Option => 
+            Option.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
 
             services.AddTransient<IPostRepository, PostRepository>();
         }
