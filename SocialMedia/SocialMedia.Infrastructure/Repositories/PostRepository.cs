@@ -3,6 +3,7 @@ using SocialMedia.Core.Entities;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Infrastructure.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SocialMedia.Infrastructure.Repositories
@@ -16,9 +17,14 @@ namespace SocialMedia.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Publicacion>> GetPost()
+        public async Task<IEnumerable<Post>> GetPost()
         {
-            var posts = await _context.Publicacion.ToListAsync();
+            var posts = await _context.Posts.ToListAsync();
+            return posts;
+        }
+        public async Task<Post> GetPost(int id)
+        {
+            var posts = await _context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
             return posts;
         }
     }
