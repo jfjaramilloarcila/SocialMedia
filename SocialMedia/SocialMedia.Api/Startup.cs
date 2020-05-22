@@ -32,6 +32,12 @@ namespace SocialMedia.Api
         {
             services.AddControllers();
 
+            //Se utiliza este código para ignorar el error de referencia circular.
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
             //Crear contexto de conexion a bd utilizando sqlserver con la cadena de conexion que esta appsetting
             services.AddDbContext<SocialMediaContext>(Option => 
             Option.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
