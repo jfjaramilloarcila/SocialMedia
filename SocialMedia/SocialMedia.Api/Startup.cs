@@ -35,7 +35,7 @@ namespace SocialMedia.Api
             })
             //VALIDAR LAS OPCIONES DE COMPOTAMINETO DEL API MODELO. deja de validar el modelo
             .ConfigureApiBehaviorOptions(Option => {
-                Option.SuppressModelStateInvalidFilter = true;
+                //Option.SuppressModelStateInvalidFilter = true;
             });
 
             //Crear contexto de conexion a bd utilizando sqlserver con la cadena de conexion que esta appsetting
