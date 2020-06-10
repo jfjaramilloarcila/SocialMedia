@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SocialMedia.Api.Responses;
 using SocialMedia.Core.DTOs;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Interfaces;
@@ -28,7 +29,8 @@ namespace SocialMedia.Api.Controllers
         {
             var posts = await _postRepository.GetPost();
             var postsDto = _mapper.Map<IEnumerable<PostDto>>(posts);
-            return Ok(postsDto);
+            var response = new ApiResponse<IEnumerable<PostDto>>(postsDto);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -36,15 +38,19 @@ namespace SocialMedia.Api.Controllers
         {
             var post = await _postRepository.GetPost(id);
             var postDto = _mapper.Map<PostDto>(post);
-            return Ok(postDto);
+            var response = new ApiResponse<PostDto>(postDto);
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PostDto postDto)
+        public async Task<IActionResult> Post(PostDto postDto )
         {
             var post = _mapper.Map<Post>(postDto);
             await _postRepository.InsertPost(post);
-            return Ok(post);
+
+            postDto = _mapper.Map<PostDto>(post);
+            var response = new ApiResponse<PostDto>(postDto);
+            return Ok(response);
         }
 
         [HttpPut]      
@@ -52,15 +58,18 @@ namespace SocialMedia.Api.Controllers
         {
             var post = _mapper.Map<Post>(postDto);
             post.PostId = id;
-            await _postRepository.UpdatePost(post);
-            return Ok(post);
+
+            var result = await _postRepository.UpdatePost(post);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Put(int id)
         {           
             var result = await _postRepository.DeletePost(id);
-            return Ok(result);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
         }
     }
 }
