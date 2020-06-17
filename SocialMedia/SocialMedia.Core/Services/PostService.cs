@@ -2,35 +2,32 @@
 using SocialMedia.Core.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialMedia.Core.Services
 {
     public class PostService : IPostService
     {
-        private readonly IPostRepository _postRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PostService(IPostRepository postRepository,IUserRepository userRepository)
+        public PostService(IUnitOfWork unitOfWork)
         {
-            _postRepository = postRepository;
-            _userRepository = userRepository;
+           _unitOfWork = unitOfWork;
         }
-               
+
         public async Task<Post> GetPost(int id)
         {
-            return await _postRepository.GetPost(id);
+            return await _unitOfWork.PostRepository.GetById(id);
         }
 
         public async Task<IEnumerable<Post>> GetPost()
         {
-            return await _postRepository.GetPost();
-        }        
+            return await _unitOfWork.PostRepository.GetAll();
+        }
 
         public async Task InsertPost(Post post)
         {
-            var user = await _userRepository.GetUser(post.UserId);
+            var user = await _unitOfWork.UserRepository.GetById(post.UserId);
             if (user == null)
             {
                 throw new Exception("USER DOESN´T EXIST");
@@ -39,17 +36,19 @@ namespace SocialMedia.Core.Services
             {
                 throw new Exception("CONTENT NOT ALLOWED");
             }
-            await _postRepository.InsertPost(post);
+            await _unitOfWork.PostRepository.Add(post);
         }
 
         public async Task<bool> UpdatePost(Post post)
         {
-           return await _postRepository.UpdatePost(post);
+            await _unitOfWork.PostRepository.Update(post);
+            return true;
         }
 
         public async Task<bool> DeletePost(int id)
         {
-            return await _postRepository.DeletePost(id);
+            await _unitOfWork.PostRepository.Delete(id);
+            return true;
         }
     }
 }
