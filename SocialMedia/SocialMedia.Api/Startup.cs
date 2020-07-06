@@ -31,12 +31,16 @@ namespace SocialMedia.Api
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //Se utiliza este código para ignorar el error de referencia circular.
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(options =>
+            { 
+            options.Filters.Add<GlobalExceptionFilter>();
+            }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             })
             //VALIDAR LAS OPCIONES DE COMPOTAMINETO DEL API MODELO. deja de validar el modelo
-            .ConfigureApiBehaviorOptions(Option => {
+            .ConfigureApiBehaviorOptions(Option =>
+             {
                 //Option.SuppressModelStateInvalidFilter = true;
             });
 
