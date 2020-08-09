@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SocialMedia.Core.CustomEntities
+﻿namespace SocialMedia.Core.CustomEntities
 {
     public class MetaDate
     {
@@ -10,10 +6,10 @@ namespace SocialMedia.Core.CustomEntities
         public int PageSize { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
-        public int HasNextPage { get; set; }
-        public int HasPreviousPage { get; set; }
-        public int NextPageUrl { get; set; }
-        public int PreviousPageUrl { get; set; }
+        public bool HasNextPage { get; set; }
+        public bool HasPreviousPage { get; set; }
+        public string NextPageUrl { get; set; }
+        public string PreviousPageUrl { get; set; }
 
     }
 }
