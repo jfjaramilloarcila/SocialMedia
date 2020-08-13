@@ -3,10 +3,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using SocialMedia.Core.CustomEntities;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.Services;
@@ -16,6 +18,8 @@ using SocialMedia.Infrastructure.Interfacaes;
 using SocialMedia.Infrastructure.Repositories;
 using SocialMedia.Infrastructure.Services;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace SocialMedia.Api
 {
@@ -57,6 +61,9 @@ namespace SocialMedia.Api
             Option.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
 
 
+            //AddSingleton manejar una unica instancia para toda la aplicación, por que el servicio no maneja estado y
+            //se le envia unos parametros y devuelve una salida no se necesita una instancia cada vez que
+            //se haga una solicitud es como  basicamente traba AddTransient
             services.AddTransient<IPostService, PostService>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();            
@@ -68,10 +75,15 @@ namespace SocialMedia.Api
                 var absoluteUri = string.Concat(request.Scheme, "://",request.Host.ToUriComponent());
                 return new UriServices(absoluteUri);
             });
-            
-            //AddSingleton manejar una unica instancia para toda la aplicación, por que el servicio no maneja estado y
-            //se le envia unos parametros y devuelve una salida no se necesita una instancia cada vez que
-            //se haga una solicitud es como  basicamente traba AddTransient
+
+            //Para generar la documentación del api
+            services.AddSwaggerGen(doc =>
+            {
+                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Social Media API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";//nombre del archivo
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);//ruta donde se encuentra la aplicación
+                doc.IncludeXmlComments(xmlPath);
+            });
 
             //registramos un filto de forma global.
             services.AddMvc(options =>
@@ -93,6 +105,14 @@ namespace SocialMedia.Api
             }
 
             app.UseHttpsRedirection();
+
+            //Inicializa el swaqqer para la documentación
+            app.UseSwagger();
+            app.UseSwaggerUI(Options =>
+            {
+                Options.SwaggerEndpoint("/swagger/v1/swagger.json","Social Media API");
+                Options.RoutePrefix = string.Empty; //para arrancar con swagger cuando inicia le api web
+            });
 
             app.UseRouting();
 
