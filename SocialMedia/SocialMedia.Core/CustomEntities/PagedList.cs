@@ -40,8 +40,7 @@ namespace SocialMedia.Core.CustomEntities
         {
             var count = source.Count();
             ///Calcula la cantidad de paginas 
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(); ;
-
+            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }

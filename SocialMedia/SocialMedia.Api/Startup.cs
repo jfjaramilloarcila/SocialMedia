@@ -108,8 +108,6 @@ namespace SocialMedia.Api
 
             });
 
-
-
             //registramos un filto de forma global.
             services.AddMvc(options =>
             {
@@ -142,7 +140,6 @@ namespace SocialMedia.Api
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();          
 
             app.UseEndpoints(endpoints =>
