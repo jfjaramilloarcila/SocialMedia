@@ -133,8 +133,8 @@ namespace SocialMedia.Api
             app.UseSwagger();
             app.UseSwaggerUI(Options =>
             {
-                Options.SwaggerEndpoint("/swagger/v1/swagger.json","Social Media API");
-                Options.RoutePrefix = string.Empty; //para arrancar con swagger cuando inicia le api web
+                Options.SwaggerEndpoint("../swagger/v1/swagger.json","Social Media API");
+                //Options.RoutePrefix = string.Empty; //para arrancar con swagger cuando inicia le api web
             });
 
             app.UseRouting();
