@@ -14,6 +14,8 @@ namespace SocialMedia.Core.Interfaces
 
         IRepository<Comment> CommentRepository { get; }
 
+        ISecurityRepository SecurityRepository { get; }
+
         void SaveChanges();
 
         Task SaveChangesAsync();

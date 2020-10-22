@@ -68,6 +68,7 @@ namespace SocialMedia.Api
             //se le envia unos parametros y devuelve una salida no se necesita una instancia cada vez que
             //se haga una solicitud es como  basicamente traba AddTransient
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<ISecurityService, SecurityService>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();            
             services.AddSingleton<IUriServices>(provider =>

@@ -36,7 +36,7 @@ namespace SocialMedia.Infrastructure.Data.Configurations
               .IsUnicode(false);
 
             builder.Property(e => e.Role)
-              .HasColumnName("Role")
+              .HasColumnName("rol")
               .HasMaxLength(15)
               .IsRequired()
               .HasConversion(
