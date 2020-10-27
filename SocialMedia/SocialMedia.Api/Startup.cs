@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis.Options;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,12 +17,15 @@ using SocialMedia.Core.Services;
 using SocialMedia.Infrastructure.Data;
 using SocialMedia.Infrastructure.Filters;
 using SocialMedia.Infrastructure.Interfacaes;
+using SocialMedia.Infrastructure.Interfaces;
+using SocialMedia.Infrastructure.Options;
 using SocialMedia.Infrastructure.Repositories;
 using SocialMedia.Infrastructure.Services;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using PasswordOptions = SocialMedia.Infrastructure.Options.PasswordOptions;
 
 namespace SocialMedia.Api
 {
@@ -58,6 +61,7 @@ namespace SocialMedia.Api
             });
 
             services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
+            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions"));
 
             //Crear contexto de conexion a bd utilizando sqlserver con la cadena de conexion que esta appsetting
             services.AddDbContext<SocialMediaContext>(Option => 
@@ -70,7 +74,8 @@ namespace SocialMedia.Api
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<ISecurityService, SecurityService>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();            
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IPasswordService, PasswordService>();
             services.AddSingleton<IUriServices>(provider =>
             {
                 //obtiene el htpp context de nuestar aplicacion
