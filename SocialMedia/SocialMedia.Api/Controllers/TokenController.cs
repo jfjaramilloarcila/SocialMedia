@@ -40,7 +40,8 @@ namespace SocialMedia.Api.Controllers
             return NotFound();
         }
 
-        private async Task<(bool, Security)> IsValidUser(UserLogin login)        {
+        private async Task<(bool, Security)> IsValidUser(UserLogin login)     
+        {
             var user = await _securityService.GetLoginByCredentials(login);  
             var isValid = _passwordService.check(user.Password, login.Password);
             return (isValid, user);

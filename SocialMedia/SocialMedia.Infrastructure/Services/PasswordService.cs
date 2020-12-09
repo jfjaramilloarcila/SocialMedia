@@ -37,12 +37,12 @@ namespace SocialMedia.Infrastructure.Services
         public string Hash(string password)
         {
             //Algoritomo PBKDF2 implementation
-            using (var algorithm = new Rfc2898DeriveBytes(password,_options.SaltSize,_options.Iteraions))
+            using (var algorithm = new Rfc2898DeriveBytes(password,_options.SaltSize,_options.Iterations))
             {
                 var key = Convert.ToBase64String(algorithm.GetBytes(_options.KeySize));
                 var salt = Convert.ToBase64String(algorithm.Salt);
 
-                return $"{_options.Iteraions}.{salt}.{key}";
+                return $"{_options.Iterations}.{salt}.{key}";
             }
         }
     }
