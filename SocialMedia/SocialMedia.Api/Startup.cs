@@ -75,7 +75,7 @@ namespace SocialMedia.Api
             services.AddTransient<ISecurityService, SecurityService>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<IPasswordService, PasswordService>();
+            services.AddSingleton<IPasswordService, PasswordService>();//para el manejo de la seguridad token.
             services.AddSingleton<IUriServices>(provider =>
             {
                 //obtiene el htpp context de nuestar aplicacion

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SocialMedia.Api.Controllers
 {
-    //[Authorize(Roles = nameof(RoleType.Administrator))]
+    [Authorize(Roles = nameof(RoleType.Administrator))] //QUitar para crear usuarios sin seguridad 
     [Produces("application/json")]    
     [Route("api/[controller]")]
     [ApiController]
